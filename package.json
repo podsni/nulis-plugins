@@ -1,7 +1,7 @@
 {
-	"name": "nulis-plugin",
+	"name": "nulisaja-plugin",
 	"version": "1.0.0",
-	"description": "Plugin Obsidian untuk membuat catatan dengan template otomatis dan pengorganisasian folder yang mudah",
+	"description": "Plugin Obsidian Nulisaja untuk membuat catatan dengan template otomatis dan pengorganisasian folder yang mudah",
 	"main": "main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",
@@ -14,7 +14,8 @@
 		"notes",
 		"templates",
 		"productivity",
-		"markdown"
+		"markdown",
+		"nulisaja"
 	],
 	"author": "Hendra",
 	"license": "MIT",
@@ -30,10 +31,10 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/yourusername/nulis.git"
+		"url": "https://github.com/yourusername/nulisaja.git"
 	},
 	"bugs": {
-		"url": "https://github.com/yourusername/nulis/issues"
+		"url": "https://github.com/yourusername/nulisaja/issues"
 	},
-	"homepage": "https://github.com/yourusername/nulis#readme"
+	"homepage": "https://github.com/yourusername/nulisaja#readme"
 }

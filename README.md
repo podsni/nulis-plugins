@@ -1,6 +1,6 @@
-# Nulis - Quick Note Creation Plugin
+# Nulisaja - Quick Note Creation Plugin
 
-Plugin Obsidian untuk membuat catatan dengan template otomatis dan pengorganisasian folder yang mudah.
+Plugin Obsidian Nulisaja untuk membuat catatan dengan template otomatis dan pengorganisasian folder yang mudah.
 
 ## Fitur
 
@@ -33,7 +33,7 @@ Menu cepat menyediakan opsi:
 
 ## Pengaturan
 
-Buka **Settings → Community plugins → Nulis** untuk mengkonfigurasi:
+Buka **Settings → Community plugins → Nulisaja** untuk mengkonfigurasi:
 
 ### Folder Settings
 - **Daily folder**: Nama folder untuk catatan harian
@@ -109,7 +109,7 @@ Contoh: Jika Anda membuat catatan dengan judul "Cinta dan Benci", nama filenya a
 ## Instalasi
 
 1. Download file `main.js`, `manifest.json`, dan `styles.css`
-2. Copy ke folder plugin: `<Vault>/.obsidian/plugins/nulis/`
+2. Copy ke folder plugin: `<Vault>/.obsidian/plugins/nulisaja/`
 3. Reload Obsidian dan aktifkan plugin di **Settings → Community plugins**
 
 ## Pengembangan

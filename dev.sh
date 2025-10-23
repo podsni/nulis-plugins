@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Development helper script for Nulis Plugin
+# Development helper script for Nulisaja Plugin
 
-echo "🚀 Nulis Plugin Development Helper"
+echo "🚀 Nulisaja Plugin Development Helper"
 echo "=================================="
 
 case "$1" in
@@ -25,7 +25,7 @@ case "$1" in
         ;;
     "lint")
         echo "Running linter..."
-        npx eslint src/ main.ts
+        npx eslint src/
         ;;
     "help"|"")
         echo "Available commands:"

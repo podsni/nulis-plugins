@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Nulis Plugin Testing Script - Enhanced UI/UX Version
+# Nulisaja Plugin Testing Script - Enhanced UI/UX Version
 
-echo "🎨 Nulis Plugin Testing & Debugging - Enhanced UI/UX"
+echo "🎨 Nulisaja Plugin Testing & Debugging - Enhanced UI/UX"
 echo "=================================================="
 
 case "$1" in
@@ -47,7 +47,7 @@ case "$1" in
         fi
         
         echo "3. Checking manifest..."
-        if grep -q '"id": "nulis"' manifest.json; then
+        if grep -q '"id": "nulisaja"' manifest.json; then
             echo "✅ Manifest check passed"
         else
             echo "❌ Manifest check failed"
@@ -55,7 +55,7 @@ case "$1" in
         fi
         
         echo "4. Checking UI features..."
-        if grep -q "nulis-quick-menu" main.js; then
+        if grep -q "nulisaja-quick-menu" main.js; then
             echo "✅ UI components found"
         else
             echo "❌ UI components missing"
@@ -87,7 +87,7 @@ case "$1" in
             echo "1. Copy main.js and manifest.json to your Obsidian plugin folder"
             echo "2. Restart Obsidian"
             echo "3. Enable plugin in Settings → Community plugins"
-            echo "4. Check console for 'Nulis Plugin: Successfully loaded'"
+            echo "4. Check console for 'Nulisaja Plugin: Successfully loaded'"
             echo ""
             echo "🎨 New UI Features to Test:"
             echo "  📱 Test on mobile device"
