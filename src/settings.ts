@@ -1,19 +1,223 @@
 import type { Plugin } from 'obsidian';
-import type { NoteType, NulisajaPluginSettings } from './types';
+import type { NoteType, NulisajaPluginSettings, TemplateLanguage } from './types';
 
-export const DEFAULT_SETTINGS: NulisajaPluginSettings = {
-	folders: {
-		daily: 'Daily',
-		knowledge: 'Knowledge',
-		ide: 'Ide',
-		notes: 'Notes',
-		projects: 'PROJECTS',
-		areas: 'AREAS',
-		resources: 'RESOURCES',
-		ideas: 'IDEAS',
-		journal: 'journal'
+type TemplateMap = Record<NoteType, string>;
+
+const TEMPLATE_SETS: Record<TemplateLanguage, TemplateMap> = {
+	id: {
+		daily: `---
+tags:
+  - daily
+---
+## Catatan
+
+![[Daily.base]]
+
+`,
+		knowledge: `---
+created: {{date}}
+tags:
+  - knowledge
+  - learning
+---
+# 🧠 {{title}}
+
+## 📚 Ringkasan
+
+
+## 🔗 Poin Penting
+- 
+
+## 💡 Wawasan
+- 
+
+## 📖 Referensi
+- 
+
+`,
+		ide: `---
+created: {{date}}
+tags:
+  - idea
+  - brainstorming
+---
+# 💡 {{title}}
+
+## 🎯 Masalah Utama
+
+
+## 💭 Ide
+- 
+
+## ✅ Solusi
+- 
+
+## 🚀 Langkah Selanjutnya
+- 
+
+`,
+		notes: `---
+created: {{date}}
+tags:
+  - note
+---
+# 📝 {{title}}
+
+## 📋 Konten
+
+
+## 🔗 Terkait
+- 
+
+## 📌 Tindak Lanjut
+- 
+
+`,
+		projects: `---
+created: {{date}}
+tags:
+  - project
+  - active
+---
+# 🚀 {{title}}
+
+## 📋 Ringkasan Proyek
+
+
+## 🎯 Tujuan
+- 
+
+## 📅 Garis Waktu
+- **Mulai**: 
+- **Batas Waktu**: 
+- **Status**: 
+
+## 📝 Tugas
+- [ ] 
+- [ ] 
+- [ ] 
+
+## 🔗 Sumber Daya
+- 
+
+## 📊 Perkembangan
+- 
+
+`,
+		areas: `---
+created: {{date}}
+tags:
+  - area
+  - responsibility
+---
+# 🎯 {{title}}
+
+## 📋 Deskripsi Area
+
+
+## 🎯 Tujuan
+- 
+
+## 📊 Metrik
+- 
+
+## 📝 Fokus Saat Ini
+- 
+
+## 🔗 Proyek Terkait
+- 
+
+## 📚 Sumber Daya
+- 
+
+`,
+		resources: `---
+created: {{date}}
+tags:
+  - resource
+  - reference
+---
+# 📚 {{title}}
+
+## 📋 Jenis Sumber
+- **Tipe**: 
+- **Kategori**: 
+- **Sumber**: 
+
+## 📝 Ringkasan
+
+
+## 🔗 Poin Penting
+- 
+
+## 💡 Cara Menggunakan
+- 
+
+## 🔗 Sumber Terkait
+- 
+
+## 📌 Tindak Lanjut
+- 
+
+`,
+		ideas: `---
+created: {{date}}
+tags:
+  - idea
+  - atomic
+  - zettelkasten
+---
+# 💡 {{title}}
+
+## 🎯 Konsep Utama
+
+
+## 🔗 Koneksi
+- **Terkait dengan**: 
+- **Membangun dari**: 
+- **Mengarah ke**: 
+
+## 📝 Pengembangan
+- 
+
+## 💭 Catatan
+- 
+
+## 🔗 Referensi
+- 
+
+`,
+		journal: `---
+created: {{date}}
+tags:
+  - journal
+  - personal
+---
+# 📖 {{title}}
+
+## 🌅 Pagi Ini
+- **Mood**: 
+- **Energi**: 
+- **Fokus**: 
+
+## 📝 Refleksi Hari Ini
+- **Yang berjalan baik**: 
+- **Yang dapat ditingkatkan**: 
+- **Pelajaran hari ini**: 
+
+## 💭 Pikiran & Perasaan
+- 
+
+## 🎯 Besok
+- **Yang ingin dicapai**: 
+- **Prioritas**: 
+
+## 🙏 Rasa Syukur
+- 
+
+`
 	},
-	templates: {
+	en: {
 		daily: `---
 tags:
   - daily
@@ -148,7 +352,7 @@ tags:
 ---
 # 📚 {{title}}
 
-## 📋 Resource Type
+## 📋 Resource Details
 - **Type**: 
 - **Category**: 
 - **Source**: 
@@ -204,49 +408,72 @@ tags:
 ---
 # 📖 {{title}}
 
-## 🌅 Pagi Ini
+## 🌅 Morning Check-in
 - **Mood**: 
-- **Energi**: 
-- **Fokus**: 
+- **Energy**: 
+- **Focus**: 
 
-## 📝 Refleksi Hari Ini
-- **Yang berjalan baik**: 
-- **Yang bisa diperbaiki**: 
-- **Pelajaran hari ini**: 
+## 📝 Daily Reflection
+- **Went well**: 
+- **Could improve**: 
+- **Lesson learned**: 
 
-## 💭 Pikiran & Perasaan
+## 💭 Thoughts & Feelings
 - 
 
-## 🎯 Besok
-- **Yang ingin dicapai**: 
-- **Prioritas**: 
+## 🎯 Tomorrow
+- **Goals**: 
+- **Priorities**: 
 
-## 🙏 Rasa Syukur
+## 🙏 Gratitude
 - 
 
 `
+	}
+};
+
+function cloneTemplates(language: TemplateLanguage): TemplateMap {
+	return { ...TEMPLATE_SETS[language] };
+}
+
+export const DEFAULT_SETTINGS: NulisajaPluginSettings = {
+	folders: {
+		daily: 'Daily',
+		knowledge: 'Knowledge',
+		ide: 'Ide',
+		notes: 'Notes',
+		projects: 'PROJECTS',
+		areas: 'AREAS',
+		resources: 'RESOURCES',
+		ideas: 'IDEAS',
+		journal: 'journal'
 	},
+	templates: cloneTemplates('id'),
 	autoCreateFolders: true,
 	defaultFolder: 'notes',
 	includeTags: true,
 	defaultTags: ['daily'],
 	theme: 'auto',
 	animations: true,
-	filenameFormat: 'original'
+	filenameFormat: 'original',
+	templateLanguage: 'id'
 };
 
 export async function loadSettings(plugin: Plugin): Promise<NulisajaPluginSettings> {
 	const raw = (await plugin.loadData()) as Partial<NulisajaPluginSettings> | null;
+	const templateLanguage = raw?.templateLanguage ?? DEFAULT_SETTINGS.templateLanguage;
+	const languageDefaults = cloneTemplates(templateLanguage);
 
 	const settings: NulisajaPluginSettings = {
 		...DEFAULT_SETTINGS,
 		...raw,
+		templateLanguage,
 		folders: {
 			...DEFAULT_SETTINGS.folders,
 			...(raw?.folders ?? {})
 		},
 		templates: {
-			...DEFAULT_SETTINGS.templates,
+			...languageDefaults,
 			...(raw?.templates ?? {})
 		},
 		defaultTags: raw?.defaultTags ?? [...DEFAULT_SETTINGS.defaultTags]
@@ -254,9 +481,9 @@ export async function loadSettings(plugin: Plugin): Promise<NulisajaPluginSettin
 
 	let updated = false;
 
-	(Object.keys(DEFAULT_SETTINGS.templates) as NoteType[]).forEach((type) => {
+	(Object.keys(languageDefaults) as NoteType[]).forEach((type) => {
 		if (!settings.templates[type]) {
-			settings.templates[type] = DEFAULT_SETTINGS.templates[type];
+			settings.templates[type] = languageDefaults[type];
 			updated = true;
 		}
 	});
@@ -273,6 +500,10 @@ export async function loadSettings(plugin: Plugin): Promise<NulisajaPluginSettin
 	}
 
 	return settings;
+}
+
+export function getDefaultTemplates(language: TemplateLanguage): TemplateMap {
+	return cloneTemplates(language);
 }
 
 export async function saveSettings(plugin: Plugin, settings: NulisajaPluginSettings): Promise<void> {

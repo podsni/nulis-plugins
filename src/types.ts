@@ -11,6 +11,8 @@ export type NoteType =
 	| 'ideas'
 	| 'journal';
 
+export type TemplateLanguage = 'id' | 'en';
+
 export interface NulisajaPluginSettings {
 	folders: Record<NoteType, string>;
 	templates: Record<NoteType, string>;
@@ -21,6 +23,7 @@ export interface NulisajaPluginSettings {
 	theme: 'light' | 'dark' | 'auto';
 	animations: boolean;
 	filenameFormat: 'hyphenated' | 'original' | 'clean';
+	templateLanguage: TemplateLanguage;
 }
 
 export interface NotePlugin extends Plugin {

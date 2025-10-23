@@ -7,7 +7,8 @@ import {
 	TextComponent,
 	ToggleComponent
 } from 'obsidian';
-import type { NoteType, SettingsPlugin } from './types';
+import { getDefaultTemplates } from './settings';
+import type { NoteType, SettingsPlugin, TemplateLanguage } from './types';
 
 interface FolderField {
 	key: NoteType;
@@ -175,6 +176,11 @@ const FILENAME_OPTIONS: Array<{ key: 'hyphenated' | 'original' | 'clean'; label:
 	{ key: 'hyphenated', label: '🔗 Hyphenated (dunia-itu-berputar)' }
 ];
 
+const LANGUAGE_OPTIONS: Array<{ key: TemplateLanguage; label: string }> = [
+	{ key: 'id', label: 'Bahasa Indonesia' },
+	{ key: 'en', label: 'English' }
+];
+
 export class NulisajaSettingTab extends PluginSettingTab {
 	constructor(app: App, private readonly plugin: SettingsPlugin) {
 		super(app, plugin);
@@ -231,6 +237,18 @@ export class NulisajaSettingTab extends PluginSettingTab {
 
 	private renderGeneralSettings(containerEl: HTMLElement): void {
 		containerEl.createEl('h2', { text: '⚙️ General Settings' });
+
+		new Setting(containerEl)
+			.setName('🌐 Template language')
+			.setDesc('Pilih bahasa default untuk template bawaan')
+			.addDropdown((dropdown: DropdownComponent) => {
+				LANGUAGE_OPTIONS.forEach((option) => dropdown.addOption(option.key, option.label));
+				dropdown
+					.setValue(this.plugin.settings.templateLanguage)
+					.onChange(async (value: TemplateLanguage) => {
+						await this.updateTemplateLanguage(value);
+					});
+			});
 
 		new Setting(containerEl)
 			.setName('📁 Auto create folders')
@@ -307,5 +325,15 @@ export class NulisajaSettingTab extends PluginSettingTab {
 	private async updateTemplate(key: NoteType, value: string): Promise<void> {
 		this.plugin.settings.templates[key] = value;
 		await this.plugin.saveSettings();
+	}
+
+	private async updateTemplateLanguage(language: TemplateLanguage): Promise<void> {
+		if (this.plugin.settings.templateLanguage === language) {
+			return;
+		}
+		this.plugin.settings.templateLanguage = language;
+		this.plugin.settings.templates = getDefaultTemplates(language);
+		await this.plugin.saveSettings();
+		this.display();
 	}
 }

@@ -48,6 +48,7 @@ Buka **Settings → Community plugins → Nulisaja** untuk mengkonfigurasi:
 - **Notes template**: Template untuk catatan umum
 
 ### General Settings
+- **Template language**: Pilih template bawaan dalam Bahasa Indonesia atau English
 - **Auto create folders**: Otomatis membuat folder jika belum ada
 - **Default folder**: Folder default untuk catatan baru
 - **Include tags**: Otomatis menyertakan tags dalam frontmatter
