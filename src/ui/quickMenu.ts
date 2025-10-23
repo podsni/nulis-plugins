@@ -11,23 +11,33 @@ interface QuickMenuOptions {
 }
 
 const MENU_CLASS = 'nulisaja-quick-menu';
+const OVERLAY_CLASS = 'nulisaja-quick-menu-overlay';
+
+type OverlayElement = HTMLElement & { __nulisajaCleanup?: () => void };
 
 export function showQuickMenu(actions: QuickMenuAction[], options: QuickMenuOptions = {}): void {
-	const existing = document.querySelector(`.${MENU_CLASS}`);
-	if (existing instanceof HTMLElement) {
-		closeMenu(existing, options.animations !== false);
+	const existingMenu = document.querySelector(`.${MENU_CLASS}`);
+	if (existingMenu instanceof HTMLElement) {
+		closeMenu(existingMenu, options.animations !== false);
 	}
+
+	const overlay = document.createElement('div') as OverlayElement;
+	overlay.className = OVERLAY_CLASS;
+
+	const titleText = options.title ?? '✨ Pembuatan Catatan Cepat';
 
 	const menu = document.createElement('div');
 	menu.className = MENU_CLASS;
+	menu.tabIndex = -1;
+	menu.setAttribute('role', 'dialog');
+	menu.setAttribute('aria-modal', 'true');
+	menu.setAttribute('aria-label', titleText);
 
-	if (options.animations === false) {
-		menu.style.animation = 'none';
-	}
+	overlay.appendChild(menu);
 
 	const title = document.createElement('h3');
 	title.className = 'nulisaja-menu-title';
-	title.textContent = options.title ?? '✨ Pembuatan Catatan Cepat';
+	title.textContent = titleText;
 	menu.appendChild(title);
 
 	const buttonsContainer = document.createElement('div');
@@ -51,7 +61,7 @@ export function showQuickMenu(actions: QuickMenuAction[], options: QuickMenuOpti
 			try {
 				action.handler();
 			} finally {
-				document.removeEventListener('click', handleOutsideClick);
+				removeEventListeners();
 				closeMenu(menu, options.animations !== false);
 			}
 		});
@@ -65,37 +75,81 @@ export function showQuickMenu(actions: QuickMenuAction[], options: QuickMenuOpti
 	closeBtn.className = 'nulisaja-close-button';
 	closeBtn.textContent = '❌ Close';
 	closeBtn.addEventListener('click', () => {
-		document.removeEventListener('click', handleOutsideClick);
+		removeEventListeners();
 		closeMenu(menu, options.animations !== false);
 	});
 
 	menu.appendChild(closeBtn);
-	document.body.appendChild(menu);
+	document.body.appendChild(overlay);
+	try {
+		menu.focus({ preventScroll: true });
+	} catch {
+		menu.focus();
+	}
 
-	const handleOutsideClick = (event: MouseEvent) => {
+	const handleOutsidePointerDown = (event: PointerEvent) => {
 		if (!menu.contains(event.target as Node)) {
+			removeEventListeners();
 			closeMenu(menu, options.animations !== false);
-			document.removeEventListener('click', handleOutsideClick);
 		}
 	};
 
-	setTimeout(() => {
-		document.addEventListener('click', handleOutsideClick);
-	}, 100);
+	const handleEscapeKey = (event: KeyboardEvent) => {
+		if (event.key === 'Escape') {
+			removeEventListeners();
+			closeMenu(menu, options.animations !== false);
+		}
+	};
+
+	const removeEventListeners = () => {
+		overlay.removeEventListener('pointerdown', handleOutsidePointerDown);
+		document.removeEventListener('keydown', handleEscapeKey);
+	};
+	overlay.__nulisajaCleanup = removeEventListeners;
+
+	if (options.animations === false) {
+		menu.style.animation = 'none';
+		overlay.style.animation = 'none';
+	}
+
+	window.setTimeout(() => {
+		overlay.addEventListener('pointerdown', handleOutsidePointerDown);
+		document.addEventListener('keydown', handleEscapeKey);
+	}, 50);
 }
 
 function closeMenu(menu: HTMLElement, animate: boolean): void {
+	const overlay = menu.closest(`.${OVERLAY_CLASS}`) as OverlayElement | null;
+	overlay?.__nulisajaCleanup?.();
+	if (overlay) {
+		overlay.__nulisajaCleanup = undefined;
+	}
+
 	if (!menu.parentElement) {
+		if (overlay) {
+			overlay.remove();
+		}
 		return;
 	}
 
 	if (!animate) {
-		menu.remove();
+		if (overlay) {
+			overlay.remove();
+		} else {
+			menu.remove();
+		}
 		return;
 	}
 
 	menu.style.animation = 'nulisaja-fade-out 0.2s ease-in forwards';
+	if (overlay) {
+		overlay.style.animation = 'nulisaja-overlay-fade-out 0.2s ease-in forwards';
+	}
 	window.setTimeout(() => {
-		menu.remove();
+		if (overlay) {
+			overlay.remove();
+		} else {
+			menu.remove();
+		}
 	}, 200);
 }

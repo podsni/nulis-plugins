@@ -8,3 +8,4 @@
 - Added folder and template alias management for quick profile switching.
 - Added flexible per-language date formats affecting templates and filenames.
 - Added hotkey configurator to define default shortcuts for each note command.
+- Revamped quick menu overlay for mobile compatibility, responsive layout, and improved accessibility.
