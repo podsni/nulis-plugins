@@ -236,6 +236,30 @@ const STYLES = `
 		}
 	}
 
+	.nulisaja-template-preview-wrapper {
+		margin-top: 10px;
+		padding: 12px;
+		border: 1px solid var(--background-modifier-border);
+		border-radius: 8px;
+		background: var(--background-secondary);
+	}
+
+	.nulisaja-template-preview-title {
+		font-size: 0.85em;
+		font-weight: 600;
+		margin-bottom: 4px;
+		color: var(--text-muted);
+	}
+
+	.nulisaja-template-preview {
+		margin: 0;
+		font-family: var(--font-monospace);
+		font-size: 0.85em;
+		white-space: pre-wrap;
+		max-height: 200px;
+		overflow: auto;
+	}
+
 	/* Success/Error states */
 	.nulisaja-success {
 		color: var(--text-success);

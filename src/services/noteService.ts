@@ -1,9 +1,12 @@
 import { TFile } from 'obsidian';
-import type { NotePlugin, NoteType } from '../types';
+import type { NotePlugin, NoteType, TemplateLanguage } from '../types';
+import { formatDate, formatDateForFilename, formatIsoDate } from '../utils/date';
 
 interface TemplateVariables {
 	title: string;
 	date: string;
+	date_iso: string;
+	language: TemplateLanguage;
 }
 
 export class NoteService {
@@ -27,12 +30,17 @@ export class NoteService {
 			throw new Error(`Invalid folder setting for note type: ${noteType}. Available folders: ${Object.keys(settings.folders).join(', ')}`);
 		}
 
+		const language = settings.templateLanguage;
+		const dateFormat = settings.dateFormats?.[language] ?? 'YYYY-MM-DD';
+		const now = new Date();
 		const processedTemplate = this.processTemplate(template, {
 			title: trimmedTitle,
-			date: new Date().toISOString().split('T')[0]
-		});
+			date: formatDate(now, dateFormat, language),
+			date_iso: formatIsoDate(now),
+			language
+		}, now);
 
-		const filename = this.generateFilename(trimmedTitle, noteType);
+		const filename = this.generateFilename(trimmedTitle, noteType, now, language, dateFormat);
 
 		const targetFolder =
 			noteType === 'daily'
@@ -55,7 +63,7 @@ export class NoteService {
 		return file;
 	}
 
-	private processTemplate(template: string, variables: TemplateVariables): string {
+	private processTemplate(template: string, variables: TemplateVariables, referenceDate: Date): string {
 		if (!template) {
 			return '';
 		}
@@ -69,22 +77,36 @@ export class NoteService {
 			}
 		});
 
-		const currentDate = new Date().toISOString().split('T')[0];
-		processedTemplate = processedTemplate.replace(/{{date}}/g, currentDate);
+		const fallbackDate = formatIsoDate(referenceDate);
+		processedTemplate = processedTemplate
+			.replace(/{{date}}/g, variables.date)
+			.replace(/{{date_iso}}/g, fallbackDate)
+			.replace(/{{language}}/g, variables.language);
 		processedTemplate = processedTemplate.replace(/{{[^}]+}}/g, '');
 
 		return processedTemplate;
 	}
 
-	private generateFilename(title: string, noteType: NoteType): string {
-		const currentDate = new Date().toISOString().split('T')[0];
+	private generateFilename(
+		title: string,
+		noteType: NoteType,
+		now: Date,
+		language: TemplateLanguage,
+		dateFormat: string
+	): string {
+		const formattedDate = formatDateForFilename(
+			now,
+			dateFormat || 'YYYY-MM-DD',
+			language ?? 'id'
+		);
 
 		if (noteType === 'daily') {
-			return `${currentDate}.md`;
+			return `${formattedDate || formatIsoDate(now)}.md`;
 		}
 
 		const formattedTitle = this.formatTitleForFilename(title);
-		return `${currentDate} ${formattedTitle}.md`;
+		const datePart = formattedDate || formatIsoDate(now);
+		return `${datePart} ${formattedTitle}.md`;
 	}
 
 	private formatTitleForFilename(title: string): string {

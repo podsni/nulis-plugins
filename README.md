@@ -9,6 +9,11 @@ Plugin Obsidian Nulisaja untuk membuat catatan dengan template otomatis dan peng
 - 📝 **Template Otomatis**: Template yang dapat dikustomisasi untuk setiap jenis catatan
 - 🏷️ **Frontmatter Otomatis**: Tags dan metadata otomatis untuk setiap catatan
 - ⚙️ **Pengaturan Lengkap**: Konfigurasi folder, template, dan preferensi lainnya
+- 🗂️ **Koleksi Template Pribadi**: Simpan beberapa set template per bahasa dan beralih instan
+- 👀 **Pratinjau Langsung**: Lihat contoh hasil template langsung dari halaman pengaturan
+- 📁 **Alias Folder & Template**: Kelola alias agar kompatibel dengan struktur vault yang berbeda
+- 📅 **Format Tanggal Fleksibel**: Atur format tanggal per bahasa untuk template dan nama file
+- ⌨️ **Pengaturan Hotkey**: Tetapkan kombinasi tombol default untuk tiap jenis catatan
 
 ## Cara Menggunakan
 
@@ -42,6 +47,8 @@ Buka **Settings → Community plugins → Nulisaja** untuk mengkonfigurasi:
 - **Notes folder**: Nama folder untuk catatan umum
 
 ### Template Settings
+- **Template collections**: Kelola kumpulan template per bahasa (buat, duplikasi, hapus)
+- **Template aliases**: Simpan variasi template dan terapkan sekali klik
 - **Daily template**: Template untuk catatan harian
 - **Knowledge template**: Template untuk catatan pengetahuan
 - **Ide template**: Template untuk catatan ide
@@ -49,9 +56,11 @@ Buka **Settings → Community plugins → Nulisaja** untuk mengkonfigurasi:
 
 ### General Settings
 - **Template language**: Pilih template bawaan dalam Bahasa Indonesia atau English
+- **Date formats**: Atur format tanggal per bahasa (token: YYYY, MMM, DD, dll)
 - **Auto create folders**: Otomatis membuat folder jika belum ada
 - **Default folder**: Folder default untuk catatan baru
 - **Include tags**: Otomatis menyertakan tags dalam frontmatter
+- **Hotkey defaults**: Tetapkan kombinasi tombol command secara global
 
 ## Template Default
 

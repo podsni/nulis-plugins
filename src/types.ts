@@ -13,6 +13,19 @@ export type NoteType =
 
 export type TemplateLanguage = 'id' | 'en';
 
+export interface TemplateCollection {
+	readonly id: string;
+	name: string;
+	templates: Record<NoteType, string>;
+	builtin?: boolean;
+}
+
+export interface TemplateAlias {
+	readonly id: string;
+	name: string;
+	content: string;
+}
+
 export interface NulisajaPluginSettings {
 	folders: Record<NoteType, string>;
 	templates: Record<NoteType, string>;
@@ -24,6 +37,12 @@ export interface NulisajaPluginSettings {
 	animations: boolean;
 	filenameFormat: 'hyphenated' | 'original' | 'clean';
 	templateLanguage: TemplateLanguage;
+	templateCollections: Record<TemplateLanguage, TemplateCollection[]>;
+	activeTemplateCollections: Record<TemplateLanguage, string>;
+	folderAliases: Record<NoteType, string[]>;
+	templateAliases: Record<NoteType, TemplateAlias[]>;
+	dateFormats: Record<TemplateLanguage, string>;
+	hotkeys: Partial<Record<NoteType, string>>;
 }
 
 export interface NotePlugin extends Plugin {
