@@ -1,0 +1,11 @@
+{
+	"id": "nulis",
+	"name": "Nulis - Quick Note Creation",
+	"version": "1.0.0",
+	"minAppVersion": "0.15.0",
+	"description": "Plugin untuk membuat catatan dengan template otomatis dan pengorganisasian folder yang mudah",
+	"author": "Hendra",
+	"authorUrl": "",
+	"fundingUrl": "",
+	"isDesktopOnly": false
+}

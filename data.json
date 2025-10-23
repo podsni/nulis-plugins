@@ -1,0 +1,33 @@
+{
+  "folders": {
+    "daily": "Daily",
+    "knowledge": "Knowledge",
+    "ide": "Ide",
+    "notes": "Notes",
+    "projects": "PROJECTS",
+    "areas": "AREAS",
+    "resources": "RESOURCES",
+    "ideas": "IDEAS",
+    "journal": "journal"
+  },
+  "templates": {
+    "daily": "---\ntags:\n  - daily\n---\n## Notes\n\n![[Daily.base]]\n\n",
+    "knowledge": "---\ncreated: {{date}}\ntags:\n  - knowledge\n  - learning\n---\n# 🧠 {{title}}\n\n## 📚 Summary\n\n\n## 🔗 Key Points\n- \n\n## 💡 Insights\n- \n\n## 📖 References\n- \n\n",
+    "ide": "---\ncreated: {{date}}\ntags:\n  - idea\n  - brainstorming\n---\n# 💡 {{title}}\n\n## 🎯 Problem Statement\n\n\n## 💭 Ideas\n- \n\n## ✅ Solutions\n- \n\n## 🚀 Next Steps\n- \n\n",
+    "notes": "---\ncreated: {{date}}\ntags:\n  - note\n---\n# 📝 {{title}}\n\n## 📋 Content\n\n\n## 🔗 Related\n- \n\n## 📌 Action Items\n- \n\n",
+    "projects": "---\ncreated: {{date}}\ntags:\n  - project\n  - active\n---\n# 🚀 {{title}}\n\n## 📋 Project Overview\n\n\n## 🎯 Goals\n- \n\n## 📅 Timeline\n- **Start**: \n- **Deadline**: \n- **Status**: \n\n## 📝 Tasks\n- [ ] \n- [ ] \n- [ ] \n\n## 🔗 Resources\n- \n\n## 📊 Progress\n- \n\n",
+    "areas": "---\ncreated: {{date}}\ntags:\n  - area\n  - responsibility\n---\n# 🎯 {{title}}\n\n## 📋 Area Description\n\n\n## 🎯 Goals\n- \n\n## 📊 Metrics\n- \n\n## 📝 Current Focus\n- \n\n## 🔗 Related Projects\n- \n\n## 📚 Resources\n- \n\n",
+    "resources": "---\ncreated: {{date}}\ntags:\n  - resource\n  - reference\n---\n# 📚 {{title}}\n\n## 📋 Resource Type\n- **Type**: \n- **Category**: \n- **Source**: \n\n## 📝 Summary\n\n\n## 🔗 Key Points\n- \n\n## 💡 How to Use\n- \n\n## 🔗 Related Resources\n- \n\n## 📌 Action Items\n- \n\n",
+    "ideas": "---\ncreated: {{date}}\ntags:\n  - idea\n  - atomic\n  - zettelkasten\n---\n# 💡 {{title}}\n\n## 🎯 Core Concept\n\n\n## 🔗 Connections\n- **Links to**: \n- **Related to**: \n- **Builds on**: \n\n## 📝 Development\n- \n\n## 💭 Thoughts\n- \n\n## 🔗 References\n- \n\n",
+    "journal": "---\ncreated: {{date}}\ntags:\n  - journal\n  - personal\n---\n# 📖 {{title}}\n\n## 🌅 Pagi Ini\n- **Mood**: \n- **Energi**: \n- **Fokus**: \n\n## 📝 Refleksi Hari Ini\n- **Yang berjalan baik**: \n- **Yang bisa diperbaiki**: \n- **Pelajaran hari ini**: \n\n## 💭 Pikiran & Perasaan\n- \n\n## 🎯 Besok\n- **Yang ingin dicapai**: \n- **Prioritas**: \n\n## 🙏 Rasa Syukur\n- \n\n"
+  },
+  "autoCreateFolders": true,
+  "defaultFolder": "notes",
+  "includeTags": true,
+  "defaultTags": [
+    "daily"
+  ],
+  "theme": "auto",
+  "animations": true,
+  "filenameFormat": "original"
+}
