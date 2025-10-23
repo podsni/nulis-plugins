@@ -1,5 +1,5 @@
 import { TFile } from 'obsidian';
-import type { NotePlugin, NoteType, TemplateLanguage } from '../types';
+import type { NoteCreationResult, NotePlugin, NoteType, TemplateLanguage } from '../types';
 import { formatDate, formatDateForFilename, formatIsoDate } from '../utils/date';
 
 interface TemplateVariables {
@@ -12,7 +12,7 @@ interface TemplateVariables {
 export class NoteService {
 	constructor(private readonly plugin: NotePlugin) {}
 
-	async createNote(noteType: NoteType, title: string, folderPath?: string): Promise<TFile> {
+	async createNote(noteType: NoteType, title: string, folderPath?: string): Promise<NoteCreationResult> {
 		const trimmedTitle = title?.trim();
 		if (!trimmedTitle) {
 			throw new Error('Invalid title provided');
@@ -52,7 +52,10 @@ export class NoteService {
 		const filePath = `${targetFolder}/${filename}`;
 		const existingFile = this.plugin.app.vault.getAbstractFileByPath(filePath);
 		if (existingFile) {
-			throw new Error(`File already exists: ${filePath}`);
+			if (existingFile instanceof TFile) {
+				return { file: existingFile, alreadyExisted: true };
+			}
+			throw new Error(`Path already exists but is not a file: ${filePath}`);
 		}
 
 		const file = await this.plugin.app.vault.create(filePath, processedTemplate);
@@ -60,7 +63,7 @@ export class NoteService {
 			throw new Error(`Failed to create file: ${filePath}`);
 		}
 
-		return file;
+		return { file, alreadyExisted: false };
 	}
 
 	private processTemplate(template: string, variables: TemplateVariables, referenceDate: Date): string {

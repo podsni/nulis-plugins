@@ -11,6 +11,7 @@ export const NOTE_DEFINITIONS: NoteCommandDefinition[] = [
 		loadingMessage: '⏳ Creating daily note...',
 		successMessage: '✅ Daily note created successfully!',
 		errorMessagePrefix: '❌ Error creating daily note: ',
+		existingMessage: '⚠️ Daily note already exists. Opening existing note.',
 		defaultTitle: () => `Daily ${new Date().toLocaleDateString()}`
 	},
 	{

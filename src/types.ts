@@ -1,4 +1,4 @@
-import type { Plugin } from 'obsidian';
+import type { Plugin, TFile } from 'obsidian';
 
 export type NoteType =
 	| 'daily'
@@ -63,10 +63,16 @@ export interface NoteCommandDefinition {
 	loadingMessage: string;
 	successMessage: string;
 	errorMessagePrefix: string;
+	existingMessage?: string;
 	prompt?: {
 		title: string;
 		placeholder: string;
 		cancelNotice: string;
 	};
 	defaultTitle?: () => string;
+}
+
+export interface NoteCreationResult {
+	file: TFile;
+	alreadyExisted: boolean;
 }

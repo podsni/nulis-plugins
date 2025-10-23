@@ -18,11 +18,16 @@ export async function runNoteAction(
 		}
 
 		loadingNotice = new Notice(definition.loadingMessage, 0);
-		const file = await noteService.createNote(definition.type, title);
+		const { file, alreadyExisted } = await noteService.createNote(definition.type, title);
 		await plugin.app.workspace.getLeaf().openFile(file);
 
 		loadingNotice.hide();
-		new Notice(definition.successMessage, 3000);
+		if (alreadyExisted) {
+			new Notice(definition.existingMessage ?? '⚠️ Note already exists. Opening existing file.', 3000);
+		} else {
+			new Notice(definition.successMessage, 3000);
+		}
+
 	} catch (error) {
 		if (loadingNotice) {
 			loadingNotice.hide();
